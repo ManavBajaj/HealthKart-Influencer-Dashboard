@@ -46,13 +46,21 @@ For the application to work correctly, your files must be organized in the follo
 
 
 /your-project-folder/
+
 ├── app.py
+
 │
+
 ├── static/
+
 │   ├── style.css
+
 │   └── script.js
+
 │
+
 └── templates/
+
 └── index.html
 
 
