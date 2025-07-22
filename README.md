@@ -41,9 +41,24 @@ To run this dashboard on your local machine, follow these steps:
 * Python 3.x installed
 * `pip` (Python package installer)
 
+**Folder Structure:**
+For the application to work correctly, your files must be organized in the following structure. The `static` and `templates` folders are essential for Flask to find the CSS, JavaScript, and HTML files.
+
+
+/your-project-folder/
+├── app.py
+│
+├── static/
+│   ├── style.css
+│   └── script.js
+│
+└── templates/
+└── index.html
+
+
 **Instructions:**
 
-1.  **Clone the repository or download the project files.**
+1.  **Organize your files** into the structure shown above.
 
 2.  **Navigate to the project directory** in your terminal:
     ```bash
@@ -124,4 +139,3 @@ The calculation for **Incremental ROAS** is one of the most important features o
     * Click "Upload & Analyze". The dashboard will reload and display the analysis for your data.
 3.  **Filter and Analyze:** Use the dropdowns and search bar to drill down into specific segments of your campaign.
 4.  **Export:** Click the "Export Performance" button to download a CSV of the data currently displayed in the main table.
-
