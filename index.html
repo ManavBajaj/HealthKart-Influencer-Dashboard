@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HealthKart Influencer Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+</head>
+<body>
+    <div class="container">
+        <!-- Header Section -->
+        <header>
+            <div>
+                <h1>Influencer Marketing Dashboard</h1>
+                <p>Campaign Performance Overview for HealthKart</p>
+            </div>
+            <div class="header-actions">
+                <button id="export-csv-btn">
+                    <i data-lucide="download"></i>
+                    Export Performance
+                </button>
+            </div>
+        </header>
+
+        <!-- Data Source & Upload Section -->
+        <div class="data-source-card">
+            <div class="active-data-source">
+                <i data-lucide="database"></i>
+                <span>Using Data: <strong>{{ active_file }}</strong></span>
+            </div>
+            <form action="/upload" method="post" enctype="multipart/form-data" class="upload-form">
+                <div class="file-inputs">
+                    <label for="influencers_file">Influencers CSV</label>
+                    <input type="file" name="influencers_file" id="influencers_file" required>
+                    
+                    <label for="tracking_data_file">Tracking CSV</label>
+                    <input type="file" name="tracking_data_file" id="tracking_data_file" required>
+
+                    <label for="payouts_file">Payouts CSV</label>
+                    <input type="file" name="payouts_file" id="payouts_file" required>
+                </div>
+                <button type="submit" class="upload-btn">
+                    <i data-lucide="upload-cloud"></i> Upload & Analyze
+                </button>
+            </form>
+             <a href="/reset" class="reset-btn">
+                <i data-lucide="rotate-ccw"></i> Use Sample Data
+            </a>
+        </div>
+
+        <!-- Filters Section -->
+        <div class="filters-card">
+            <div class="filter-group">
+                <label for="search-influencer"><i data-lucide="search"></i></label>
+                <input type="text" id="search-influencer" placeholder="Search Influencer...">
+            </div>
+            <div class="filter-group">
+                <label for="brand-filter">Brand</label>
+                <select id="brand-filter">
+                    {% for brand in brands %}
+                        <option value="{{ brand }}">{{ brand }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="platform-filter">Platform</label>
+                <select id="platform-filter">
+                    {% for platform in platforms %}
+                        <option value="{{ platform }}">{{ platform }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="filter-group">
+                <label for="category-filter">Category</label>
+                <select id="category-filter">
+                    {% for category in categories %}
+                        <option value="{{ category }}">{{ category }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+        </div>
+
+        <!-- KPIs Section -->
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-icon"><i data-lucide="indian-rupee"></i></div>
+                <div class="kpi-info">
+                    <span class="kpi-title">Total Revenue</span>
+                    <span class="kpi-value" id="kpi-revenue">{{ "₹{:,.0f}".format(data.campaign_revenue) }}</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon"><i data-lucide="users"></i></div>
+                <div class="kpi-info">
+                    <span class="kpi-title">Total Spend</span>
+                    <span class="kpi-value" id="kpi-cost">{{ "₹{:,.0f}".format(data.campaign_cost) }}</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon"><i data-lucide="trending-up"></i></div>
+                <div class="kpi-info">
+                    <span class="kpi-title">Overall ROAS</span>
+                    <span class="kpi-value" id="kpi-roas">{{ "{:.2f}x".format(data.campaign_roas) }}</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon"><i data-lucide="bar-chart-2"></i></div>
+                <div class="kpi-info">
+                    <span class="kpi-title">Incremental ROAS</span>
+                    <span class="kpi-value" id="kpi-iroas">{{ "{:.2f}x".format(data.incremental_roas) }}</span>
+                </div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-icon"><i data-lucide="shopping-cart"></i></div>
+                <div class="kpi-info">
+                    <span class="kpi-title">Total Orders</span>
+                    <span class="kpi-value" id="kpi-orders">{{ "{:,.0f}".format(data.total_orders) }}</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Charts Section -->
+        <div class="charts-grid">
+            <div class="chart-card">
+                <h3>Revenue by Platform</h3>
+                <div class="chart-canvas-container">
+                    <canvas id="platform-chart"></canvas>
+                </div>
+            </div>
+            <div class="chart-card">
+                <h3>Top 5 Influencers by Revenue</h3>
+                <div class="chart-canvas-container">
+                    <canvas id="top-influencers-chart"></canvas>
+                </div>
+            </div>
+        </div>
+
+        <!-- Table Section -->
+        <div class="table-card">
+            <h3>Influencer Performance Details</h3>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Influencer</th>
+                            <th>Category</th>
+                            <th>Platform</th>
+                            <th class="text-right">Followers</th>
+                            <th class="text-right">Revenue</th>
+                            <th class="text-right">Orders</th>
+                            <th class="text-right">Cost</th>
+                            <th class="text-right">ROAS</th>
+                        </tr>
+                    </thead>
+                    <tbody id="influencer-table-body">
+                        {% for inf in data.influencer_details %}
+                        <tr>
+                            <td>{{ inf.name }}</td>
+                            <td>{{ inf.category }}</td>
+                            <td>{{ inf.platform }}</td>
+                            <td class="text-right">{{ "{:,.0f}k".format(inf.followers / 1000) }}</td>
+                            <td class="text-right">₹{{ "{:,.0f}".format(inf.total_revenue) }}</td>
+                            <td class="text-right">{{ "{:,.0f}".format(inf.total_orders) }}</td>
+                            <td class="text-right">₹{{ "{:,.0f}".format(inf.total_cost) }}</td>
+                            <td class="text-right roas-value {% if inf.roas > data.overall_campaign_roas %}positive{% else %}negative{% endif %}">
+                                {{ "{:.2f}x".format(inf.roas) }}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+                 {% if not data.influencer_details %}
+                    <p id="no-data-message" class="no-data">No influencers match the current filters.</p>
+                {% else %}
+                    <p id="no-data-message" class="no-data" style="display: none;">No influencers match the current filters.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Pass data from Flask to JavaScript safely -->
+    <script id="initial-data" type="application/json">
+        {{ data|tojson|safe }}
+    </script>
+
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+    <script>
+        lucide.createIcons();
+    </script>
+</body>
+</html>

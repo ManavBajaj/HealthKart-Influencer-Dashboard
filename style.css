@@ -1,0 +1,411 @@
+/* ==========================================================================
+   Global Styles & Variables
+   ========================================================================== */
+:root {
+    --background-color: #000000;
+    --card-color: #111827; /* A very dark gray */
+    --border-color: #374151; /* A slightly lighter gray for borders */
+    --text-primary: #F9FAFB; /* Off-white for primary text */
+    --text-secondary: #9CA3AF; /* Gray for secondary text */
+    --accent-color: #4F46E5; /* Indigo for accents */
+    --accent-hover: #4338CA;
+    --positive-color: #22C55E; /* Green for positive ROAS */
+    --negative-color: #EF4444; /* Red for negative ROAS */
+    --font-family: 'Inter', sans-serif;
+}
+
+body {
+    font-family: var(--font-family);
+    background-color: var(--background-color);
+    color: var(--text-primary);
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem;
+}
+
+/* ==========================================================================
+   Header
+   ========================================================================== */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+header h1 {
+    font-size: 2.25rem;
+    font-weight: 800;
+    margin: 0;
+    color: #FFFFFF;
+}
+
+header p {
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+    margin-top: 0.5rem;
+}
+
+#export-csv-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+#export-csv-btn:hover {
+    background-color: var(--accent-hover);
+}
+
+/* ==========================================================================
+   Data Source & Upload Card
+   ========================================================================== */
+.data-source-card {
+    background-color: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.active-data-source {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 1.1rem;
+    color: var(--text-secondary);
+}
+.active-data-source strong {
+    color: var(--text-primary);
+}
+
+.upload-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+}
+.file-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem;
+    align-items: center;
+    flex-grow: 1;
+}
+.file-inputs label {
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+.file-inputs input[type="file"] {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+}
+.file-inputs input[type="file"]::file-selector-button {
+    background-color: #1F2937;
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 0.5rem 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+.file-inputs input[type="file"]::file-selector-button:hover {
+    background-color: #374151;
+}
+
+.upload-btn, .reset-btn {
+    background-color: var(--accent-color);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.25rem;
+    border-radius: 0.5rem;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+}
+.upload-btn:hover, .reset-btn:hover {
+    background-color: var(--accent-hover);
+}
+.reset-btn {
+    background-color: #374151;
+}
+.reset-btn:hover {
+    background-color: #4B5563;
+}
+
+
+/* ==========================================================================
+   Cards (Filters, KPIs, Charts, Table)
+   ========================================================================== */
+.filters-card, .kpi-card, .chart-card, .table-card {
+    background-color: var(--card-color);
+    border: 1px solid var(--border-color);
+    border-radius: 1rem;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+/* ==========================================================================
+   Filters
+   ========================================================================== */
+.filters-card {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+    align-items: end;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.filter-group input, .filter-group select {
+    background-color: #1F2937; /* Slightly lighter than card */
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 0.5rem;
+    padding: 0.75rem;
+    font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.filter-group input::placeholder {
+    color: var(--text-secondary);
+}
+
+.filter-group input:focus, .filter-group select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px var(--accent-hover);
+}
+
+.filter-group:first-child {
+    position: relative;
+}
+
+.filter-group:first-child label {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    margin-top: 0.25rem; /* Fine-tuning */
+    color: var(--text-secondary);
+}
+
+.filter-group:first-child input {
+    padding-left: 3rem;
+}
+
+/* ==========================================================================
+   KPIs
+   ========================================================================== */
+.kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5rem;
+}
+
+.kpi-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.kpi-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+}
+
+.kpi-icon {
+    background-color: #1F2937;
+    padding: 0.75rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-secondary);
+}
+
+.kpi-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.kpi-title {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+}
+
+.kpi-value {
+    font-size: 1.75rem;
+    font-weight: 700;
+    color: var(--text-primary);
+    margin-top: 0.25rem;
+}
+
+/* ==========================================================================
+   Charts
+   ========================================================================== */
+.charts-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+    gap: 1.5rem;
+    align-items: stretch;
+}
+
+.chart-card {
+    display: flex;
+    flex-direction: column;
+    height: 450px; /* Giving a fixed height to ensure alignment */
+}
+
+.chart-card h3 {
+    margin-top: 0;
+    margin-bottom: 1.5rem;
+    font-size: 1.25rem;
+    font-weight: 600;
+    flex-shrink: 0; /* Prevents the title from shrinking */
+}
+
+.chart-canvas-container {
+    position: relative;
+    width: 100%;
+    flex-grow: 1; /* Allows the container to fill the available space */
+}
+
+
+/* ==========================================================================
+   Table
+   ========================================================================== */
+.table-card h3 {
+    margin-top: 0;
+    font-size: 1.25rem;
+    font-weight: 600;
+}
+
+.table-container {
+    width: 100%;
+    overflow-x: auto; /* For responsiveness */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+}
+
+th, td {
+    padding: 1rem;
+    text-align: left;
+    border-bottom: 1px solid var(--border-color);
+    white-space: nowrap; /* Prevents table cells from wrapping */
+}
+
+thead {
+    background-color: #1F2937;
+}
+
+th {
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--text-secondary);
+    letter-spacing: 0.05em;
+}
+
+tbody tr:hover {
+    background-color: #1F2937;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.roas-value.positive {
+    color: var(--positive-color);
+    font-weight: 600;
+}
+
+.roas-value.negative {
+    color: var(--negative-color);
+    font-weight: 600;
+}
+
+.no-data {
+    text-align: center;
+    padding: 2rem;
+    color: var(--text-secondary);
+}
+
+/* ==========================================================================
+   Lucide Icons
+   ========================================================================== */
+i[data-lucide] {
+    width: 1.25rem;
+    height: 1.25rem;
+}
+
+.header-actions i[data-lucide], .upload-btn i[data-lucide], .reset-btn i[data-lucide] {
+    width: 1rem;
+    height: 1rem;
+}
+
+/* ==========================================================================
+   Responsiveness
+   ========================================================================== */
+@media (max-width: 768px) {
+    .container {
+        padding: 1rem;
+    }
+    header {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    .header-actions {
+        width: 100%;
+    }
+    #export-csv-btn {
+        width: 100%;
+        justify-content: center;
+    }
+    .kpi-grid {
+        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    }
+}
