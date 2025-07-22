@@ -53,15 +53,15 @@ For the application to work correctly, your files must be organized in the follo
 
 ├── static/
 
-│            ├── style.css
+│  ├── style.css
 
-│            └── script.js
+│  └── script.js
 
 │
 
 └── templates/
 
-         └── index.html
+ └── index.html
 
 
 **Instructions:**
